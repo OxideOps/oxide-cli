@@ -73,7 +73,12 @@ fn main() {
     }
 }
 
-fn run_command(command: &str, args: &[&str], execution_msg: &str, failure_msg: &str) -> Result<(), OxideError> {
+fn run_command(
+    command: &str,
+    args: &[&str],
+    execution_msg: &str,
+    failure_msg: &str,
+) -> Result<(), OxideError> {
     let status = OsCommand::new(command)
         .args(args)
         .status()
@@ -92,16 +97,29 @@ fn run_or_build(action: &Action, package: &str) -> Result<(), OxideError> {
         Action::Build => "build",
         _ => unreachable!(),
     };
-    
-    run_command("cargo", &[action_str, "-p", package], 
-                &format!("Failed to execute cargo {} command", action_str), 
-                &format!("Cargo {} for {} failed", action_str, package))
+
+    run_command(
+        "cargo",
+        &[action_str, "-p", package],
+        &format!("Failed to execute cargo {} command", action_str),
+        &format!("Cargo {} for {} failed", action_str, package),
+    )
 }
 
 fn fly_deploy() -> Result<(), OxideError> {
-    run_command("flyctl", &["deploy"], "Failed to execute fly deploy command", "Fly deploy failed")
+    run_command(
+        "flyctl",
+        &["deploy"],
+        "Failed to execute fly deploy command",
+        "Fly deploy failed",
+    )
 }
 
 fn setup() -> Result<(), OxideError> {
-    run_command("./setup.sh", &[], "Failed to execute setup. Ensure that you are at the root of the project", "Setup failed")
+    run_command(
+        "./setup.sh",
+        &[],
+        "Failed to execute setup. Ensure that you are at the root of the project",
+        "Setup failed",
+    )
 }
