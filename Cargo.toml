@@ -13,3 +13,4 @@ name = "oxide"
 path = "src/main.rs"
 
 [dependencies]
+thiserror = "1.0.48"
