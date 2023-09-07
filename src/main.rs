@@ -1,6 +1,8 @@
 use std::process::Command as OsCommand;
 use thiserror::Error;
 
+type OxideResult<T> = Result<T, OxideError>;
+
 #[derive(Debug, Error)]
 enum OxideError {
     #[error("Invalid or insufficient arguments. Usage: oxide [run|build] <PACKAGE> | [deploy] | [setup]")]
@@ -30,7 +32,7 @@ struct Command {
 }
 
 impl Command {
-    fn from_args(args: &[String]) -> Result<Command, OxideError> {
+    fn from_args(args: &[String]) -> OxideResult<Command> {
         if args.len() < 2 {
             return Err(OxideError::InvalidArgs);
         }
@@ -78,7 +80,7 @@ fn run_command(
     args: &[&str],
     execution_msg: &str,
     failure_msg: &str,
-) -> Result<(), OxideError> {
+) -> OxideResult<()> {
     let status = OsCommand::new(command)
         .args(args)
         .status()
@@ -91,7 +93,7 @@ fn run_command(
     }
 }
 
-fn run_or_build(action: &Action, package: &str) -> Result<(), OxideError> {
+fn run_or_build(action: &Action, package: &str) -> OxideResult<()> {
     let action_str = match action {
         Action::Run => "run",
         Action::Build => "build",
@@ -106,7 +108,7 @@ fn run_or_build(action: &Action, package: &str) -> Result<(), OxideError> {
     )
 }
 
-fn fly_deploy() -> Result<(), OxideError> {
+fn fly_deploy() -> OxideResult<()> {
     run_command(
         "flyctl",
         &["deploy"],
@@ -115,7 +117,7 @@ fn fly_deploy() -> Result<(), OxideError> {
     )
 }
 
-fn setup() -> Result<(), OxideError> {
+fn setup() -> OxideResult<()> {
     run_command(
         "./setup.sh",
         &[],
