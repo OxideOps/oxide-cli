@@ -95,7 +95,7 @@ fn run_or_build(action: &Action, package: &str) -> Result<(), OxideError> {
     let action_str = match action {
         Action::Run => "run",
         Action::Build => "build",
-        _ => unreachable!(),
+        _ => panic!("Invalid action passed to 'run_or_build()'"),
     };
 
     run_command(
