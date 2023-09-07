@@ -1,0 +1,15 @@
+[package]
+name = "oxide-cli"
+version = "0.1.0"
+authors = ["OxideOps"]
+edition = "2021"
+description = "CLI tool for OxideOps organization"
+repository = "https://github.com/OxideOps/oxide-cli"
+license = "MIT"
+
+# This ensures the binary is named `oxide`
+[[bin]]
+name = "oxide"
+path = "src/main.rs"
+
+[dependencies]
